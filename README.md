@@ -39,7 +39,7 @@ Once installed and activated go to *Settings* -> *Updates to Slack*
 <img src="https://www.alexandercooper.co.uk/git/updates-to-slack/settings.png" width="325" alt="WordPress Settings -> Updates to Slack" />
 
 The following options are available;
-* **Slack URL(s):** Create a Slack webhooks](https://slack.com/intl/en-gb/help/articles/115005265063-Incoming-webhooks-for-Slack) for your channel and enter it in here (ie. https ://hooks.slack.com/services/ ... ). For multiple URLs, simply add additional Slack webhooks, one per line, in this field
+* **Slack URL(s):** [Create a Slack webhook](https://slack.com/intl/en-gb/help/articles/115005265063-Incoming-webhooks-for-Slack) for your channel and enter it in here (ie. https ://hooks.slack.com/services/ ... ). For multiple URLs, simply add additional Slack webhooks, one per line, in this field
 * **Slack Alerts Enabled?:** *Yes* to enable, *No* to prevent alerts. useful if you're also running a Development installation
 * **Site Name:** If left blank, your site name is taken from the one entered in the General Settings of your WordPress site
 * **Next Scheduled Run Time:** Enter a date and time of the next trigger
