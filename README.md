@@ -1,5 +1,4 @@
-<img src="https://img.shields.io/wordpress/plugin/v/updates-to-slack?style=plastic">
-<img src="https://img.shields.io/wordpress/plugin/last-updated/updates-to-slack?style=plastic">
+<img src="https://img.shields.io/wordpress/plugin/v/updates-to-slack?style=plastic"> <img src="https://img.shields.io/wordpress/plugin/last-updated/updates-to-slack?style=plastic">
 
 
 # Updates to Slack
