@@ -1,3 +1,7 @@
+<img src="https://img.shields.io/wordpress/plugin/v/updates-to-slack?style=plastic">
+<img src="https://img.shields.io/wordpress/plugin/last-updated/updates-to-slack?style=plastic">
+
+
 # Updates to Slack
 
 **Updates to Slack** is a *WordPress plugin* that informs of Core, Plugin and Theme updates, that are required on your WordPress installation, to one or more Slack channels. It does so on a daily, weekly or monthly schedule at a time of your choosing.
