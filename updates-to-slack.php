@@ -3,7 +3,7 @@
  * Plugin Name:         Updates to Slack
  * Plugin URI:
  * Description:         Sends Slack alerts about WordPress core, plugin and theme updates
- * Version:             1.4.0
+ * Version:             1.4.1
  * Author:              Alex Cooper
  * Author URI:          https://alexpcooper.co.uk/
  * License:             GPL v2 or later
@@ -44,14 +44,14 @@ function updates2slack_sendUpdateInfoToSlack($test_mode = 0)
 	// make sure that we can run this in the first place...
 	if (strtolower(get_option('updates2slack_enabled')) != 'yes')
 	{
-		update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'), true);
-		update_option('updates2slack_lastrundata', 'ERROR! Plugin configuration "Slack Alerts Enabled" hasn\'t been set to "Yes".', true);
+		update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'), false);
+		update_option('updates2slack_lastrundata', 'ERROR! Plugin configuration "Slack Alerts Enabled" hasn\'t been set to "Yes".', false);
 		return false;
 	}
 	if (strlen(trim(get_option('updates2slack_slackurls'))) == 0)
 	{
-		update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'), true);
-		update_option('updates2slack_lastrundata', 'ERROR! No Slack Webhook URLs have been configured.', true);
+		update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'), false);
+		update_option('updates2slack_lastrundata', 'ERROR! No Slack Webhook URLs have been configured.', false);
 		return false;
 	}
 
@@ -78,7 +78,7 @@ function updates2slack_sendUpdateInfoToSlack($test_mode = 0)
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "WordPress Core version '.$updates_for_core->updates[0]->version.' is ready to be installed (currently on verson '.$updates_for_core->version_checked.')"
+				"text": "WordPress Core version '.$updates_for_core->updates[0]->version.' is ready to be installed (currently on version '.$updates_for_core->version_checked.')"
 			}
 		},';
     }
@@ -261,18 +261,19 @@ function updates2slack_sendUpdateInfoToSlack($test_mode = 0)
             $plugin_output .= "\n";
 		}
 
-		update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'));
-		update_option('updates2slack_lastrundata', esc_attr($plugin_output));
+		update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'), false);
+		update_option('updates2slack_lastrundata', esc_attr($plugin_output), false);
 
         return true;
     }
     else
     {
-        update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'));
-		update_option('updates2slack_lastrundata', 'No updates available');
+        update_option('updates2slack_lastrundt', $now->format('Y-m-d H:i:s'), false);
+		update_option('updates2slack_lastrundata', 'No updates available', false);
     }
 
-
+    $GLOBALS['wp_object_cache']->delete( 'updates2slack_lastrundt', 'options' );
+    $GLOBALS['wp_object_cache']->delete( 'updates2slack_lastrundata', 'options' );
 
 }
 
@@ -302,8 +303,8 @@ function updates2slack_register_settings()
 	add_option( 'updates2slack_ignore_plugins', '');
 	add_option( 'updates2slack_ignore_themes', '');
 
-	add_option('updates2slack_lastrundt', '');
-	add_option('updates2slack_lastrundata', '');
+	add_option('updates2slack_lastrundt', '', null, false);
+	add_option('updates2slack_lastrundata', '', null, false);
 
    register_setting( 'updates2slack_options_group', 'updates2slack_option_name', 'updates2slack_callback' );
 }
@@ -320,7 +321,17 @@ add_action('admin_menu', 'updates2slack_register_options_page');
 function updates2slack_options_page()
 {
 ?>
-  <div>
+<?php
+  $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && sanitize_text_field($_SERVER['HTTP_CACHE_CONTROL']) === 'max-age=0';
+  $page_link = (isset($_SERVER['HTTPS']) && sanitize_text_field($_SERVER['HTTPS']) === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  if (isset($_GET) && isset($_GET['testbutton']) && sanitize_text_field($_GET['testbutton']) == 1 && !$pageWasRefreshed)
+  {
+      updates2slack_sendUpdateInfoToSlack(1);
+      header('Location: '.$page_link);
+  }
+?>
+
+ <div>
   <?php screen_icon(); ?>
   <h2>Updates to Slack Settings</h2>
   <form method="post" action="options.php">
@@ -426,10 +437,9 @@ function updates2slack_options_page()
 						{
 						?>
 						  <p style="background-color: green; color: white; padding: 5px; text-align: center;">Slack Alert Triggered</p>
-						  <?php updates2slack_sendUpdateInfoToSlack(1); ?>
 				      <?php } ?>
-					  <?php $page_link = (isset($_SERVER['HTTPS']) && sanitize_text_field($_SERVER['HTTPS']) === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
-					  <a class="button" href="<?php echo $page_link; ?>&testbutton=1">Trigger Slack Alert Now</a>
+					  <a class="button" <?php if (strlen(trim(esc_textarea(get_option('updates2slack_slackurls')))) == 0) { echo 'href="javascript:void(0);" disabled'; } else { echo ' href="'.$page_link.'&testbutton=1"'; } ?>>Trigger Slack Alert Now</a>
+                      <?php if (strlen(trim(esc_textarea(get_option('updates2slack_slackurls')))) == 0) { ?><p>Please save a Slack URL before testing</p><?php } else { ?><p><em>Please ensure your settings are saved before testing</em></p><?php } ?>
 				  </td>
 			  </tr>
 		  </table>
