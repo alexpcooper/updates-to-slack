@@ -39,7 +39,7 @@ Install the plugin at /wp-content/plugins/, as you would any other standard Word
 
 Once installed and activated go to *Settings* -> *Updates to Slack*
 
-<img src="https://www.alexandercooper.co.uk/git/updates-to-slack/settings.png" width="325" alt="WordPress Settings -> Updates to Slack" />
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-3.png" width="325" alt="WordPress Settings -> Updates to Slack" />
 
 The following options are available;
 * **Slack URL(s):** [Create a Slack webhook](https://slack.com/intl/en-gb/help/articles/115005265063-Incoming-webhooks-for-Slack) for your channel and enter it in here (ie. https ://hooks.slack.com/services/ ... ). For multiple URLs, simply add additional Slack webhooks, one per line, in this field
@@ -52,8 +52,10 @@ The following options are available;
 * **Test:** A button that allows you to trigger a check immediately. Useful for testing purposes
 * **Ignore Plugins and Themes:** Allows you to select which of your themes and plugins you don't wish to be notified about when there is an update
 
-<img src="https://www.alexandercooper.co.uk/git/updates-to-slack/config-1.png" width="80%" alt="Updates to Slack Config (1)" />
-<img src="https://www.alexandercooper.co.uk/git/updates-to-slack/config-2.png" width="80%" alt="Updates to Slack Config (2)" />
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-1.png" width="80%" alt="Updates to Slack Config (1)" />
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-2.png" width="80%" alt="Updates to Slack Config (2)" />
+
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-4.png" width="80%" alt="Updates to Slack: Slack Card update" />
 
   
 ### Why Ignore Plugins and Themes?
