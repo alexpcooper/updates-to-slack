@@ -39,7 +39,7 @@ Install the plugin at /wp-content/plugins/, as you would any other standard Word
 
 Once installed and activated go to *Settings* -> *Updates to Slack*
 
-<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-3.png" width="325" alt="WordPress Settings -> Updates to Slack" />
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/04/screenshot-3.png" width="325" alt="WordPress Settings -> Updates to Slack" />
 
 The following options are available;
 * **Slack URL(s):** [Create a Slack webhook](https://slack.com/intl/en-gb/help/articles/115005265063-Incoming-webhooks-for-Slack) for your channel and enter it in here (ie. https ://hooks.slack.com/services/ ... ). For multiple URLs, simply add additional Slack webhooks, one per line, in this field
