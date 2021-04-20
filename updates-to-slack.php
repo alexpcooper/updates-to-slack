@@ -3,7 +3,7 @@
  * Plugin Name:         Updates to Slack
  * Plugin URI:
  * Description:         Sends Slack alerts about WordPress core, plugin and theme updates
- * Version:             1.4.2
+ * Version:             1.4.3
  * Author:              Alex Cooper
  * Author URI:          https://alexpcooper.co.uk/
  * License:             GPL v2 or later
