@@ -3,7 +3,7 @@
  * Plugin Name:         Updates to Slack
  * Plugin URI:
  * Description:         Sends Slack alerts about WordPress core, plugin and theme updates
- * Version:             1.4.3
+ * Version:             1.4.4
  * Author:              Alex Cooper
  * Author URI:          https://alexpcooper.co.uk/
  * License:             GPL v2 or later
@@ -375,16 +375,26 @@ function updates2slack_options_page()
 
   $current_cron_status = 'Not scheduled';
   $already_scheduled = false;
-  foreach (_get_cron_array() as $cron_time => $cron_name)
+  foreach ( _get_cron_array() as $cron_time => $data )
   {
-	  if (key($cron_name) == CRON_JOB_REF_UPDATES2SLACK)
-	  {
-          $already_scheduled = true;
+      if ( is_int( $cron_time ) )
+      {
+          if ( 1 <= count( $data ) )
+          {
+              foreach ( $data as $cron_name => $cron_data )
+              {
+            	  if ($cron_name == CRON_JOB_REF_UPDATES2GOTIFY)
+            	  {
+                      $already_scheduled = true;
 
-		  $cron_dt = new DateTime("@$cron_time");
-		  $current_cron_status = 'Next trigger due at '.$cron_dt->format('Y-m-d H:i:s');
-		  break;
-	  }
+            		  $cron_dt = new DateTime("@$cron_time");
+            		  $current_cron_status = 'Next trigger due at '.$cron_dt->format('Y-m-d H:i:s');
+            		  break;
+            	  }
+
+              }
+          }
+      }
   }
 
   ?>
