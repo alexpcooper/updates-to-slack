@@ -25,7 +25,7 @@ If you require support from me, the plugin author, feel free to contact me direc
 
 ## Copyright and License
 
-2020&thinsp;&ndash;&thinsp;2021 &copy; [Alex Cooper MIT](https://github.com/alexpcooper/updates-to-slack/blob/main/LICENSE).
+2020&thinsp;&ndash;&thinsp;2023 &copy; [Alex Cooper MIT](https://github.com/alexpcooper/updates-to-slack/blob/main/LICENSE).
 
 
 ## Documentation
@@ -55,9 +55,9 @@ The following options are available;
 <img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-1.png" width="80%" alt="Updates to Slack Config (1)" />
 <img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-2.png" width="80%" alt="Updates to Slack Config (2)" />
 
-<img src="https://alexpcooper.co.uk/wp-content/uploads/2021/02/screenshot-4.png" width="80%" alt="Updates to Slack: Slack Card update" />
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2023/02/screenshot-5.png" width="80%" alt="Updates to Slack: Slack Card update" />
+<img src="https://alexpcooper.co.uk/wp-content/uploads/2023/02/screenshot-6.png" width="80%" alt="Updates to Slack: Slack Card update" />
 
-  
 ### Why Ignore Plugins and Themes?
 
 The idea behind this was that you may have plugins that, should an update occur, would deprecate functionality on your site and updating it isn't an option then you may not want to hear via every scheduled alert that there's an update out the for it. Similarly, with themes, you may be keeping a native WordPress theme, such as twenty twenty-one for troubleshooting but you don't actually need to immediately address any available updates for it.
@@ -69,7 +69,6 @@ It isn't advised to keep a WordPress site on a live environment with updates req
 
 
 ### Limitations
-* This plugin has been tested on WordPress core versions 5.3 onwards.
+* This plugin has been tested on WordPress core versions 4.0 onwards.
 * I currently have this Updates to Slack plugin running on several live WordPress sites; it has proved very useful.
-* This plugin has not been tested on a WordPress Multisite environment. If you try it and it works then brilliant! Please let me know. If not, and you need it to, please get in touch and I'll be happy to look into it.
 * If there's a demand to continue to add further functionality to this plugin then I am open to doing so. In the meantime I intend to keep it working on new versions of WordPress.
