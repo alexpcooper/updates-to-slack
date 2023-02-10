@@ -3,7 +3,7 @@
  * Plugin Name:         Updates to Slack
  * Plugin URI:
  * Description:         Sends Slack alerts about WordPress core, plugin and theme updates
- * Version:             2.0.0
+ * Version:             2.1.0
  * Author:              Alex Cooper
  * Author URI:          https://alexpcooper.co.uk/
  * License:             GPL v2 or later
@@ -30,18 +30,17 @@ if ( ! class_exists( 'Updates_To_Slack_Plugin' ) ) {
             $this->connection_name  = 'Slack';
             $this->plugin_reference = 'updates2slack';
             $this->cron_reference   = 'cron_slackalerts_updates';
-            $this->support_url      = 'https://alexpcooper.co.uk/';
+            $this->support_url      = 'https://alexpcooper.co.uk/wordpress-plugin/updates-to-slack/';
 
             
             add_action( 'init',                             array( $this, 'schedule_cron_check' ) );
             add_action( 'admin_init',                       array( $this, 'register_settings' ) );
             add_action( 'admin_menu',                       array( $this, 'register_options_page') );
-            add_action( 'slack_update_alert_cron_check',    array( $this, 'check_for_updates' ) );
+            add_action( $this->cron_reference,              array( $this, 'check_for_updates') );
 
             add_filter('plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'register_plugin_link') );
 
             add_action('admin_footer', array( $this, 'register_admin_footer' ) );
-
         }
 
         public function register_settings() {
@@ -74,7 +73,9 @@ if ( ! class_exists( 'Updates_To_Slack_Plugin' ) ) {
         }
 
         public function register_admin_footer() {
-            echo sprintf('<p class="alignright" style="padding: 0 1em 2em 0;">%s | <a href="%s" target="_blank">Feedback, Help &amp; Support</a></p>', $this->plugin_name, $this->support_url);
+            if (strpos($_SERVER['REQUEST_URI'], $this->plugin_reference) !== false) {
+                echo sprintf('<p class="alignright" style="padding: 0 1em 2em 0;">%s | <a href="%s" target="_blank">Feedback, Help &amp; Support</a></p>', $this->plugin_name, $this->support_url);
+            }
         }
 
         public function register_options_page() {
@@ -118,8 +119,16 @@ if ( ! class_exists( 'Updates_To_Slack_Plugin' ) ) {
             if (sanitize_text_field($_POST[$this->plugin_reference.'_nextruntime_time']) != '') {
                 $new_dt = new DateTime(sanitize_text_field($_POST[$this->plugin_reference.'_nextruntime_date']).' '.sanitize_text_field($_POST[$this->plugin_reference.'_nextruntime_time']));
     
+                update_option( $this->plugin_reference.'_nextruntime_date', $new_dt->format('Y-m-d') );
+        		update_option( $this->plugin_reference.'_nextruntime_time', $new_dt->format('H:i').':00' );
+
                 $this->unschedule_cron_check();
                 $this->schedule_cron_check($cron_frequency, $new_dt->getTimestamp());
+            }
+            else {
+                update_option( $this->plugin_reference.'_nextruntime_date', '' );
+        		update_option( $this->plugin_reference.'_nextruntime_time', '' );
+                $this->unschedule_cron_check();
             }
     
         }
@@ -155,15 +164,21 @@ if ( ! class_exists( 'Updates_To_Slack_Plugin' ) ) {
 
         public function schedule_cron_check($frequency = 'daily', $time = '00:00') 
         {
-            if ( ! wp_next_scheduled( $this->cron_reference ) ) {
+            if ( wp_next_scheduled( $this->cron_reference ) ) {
+                wp_reschedule_event( $time, $frequency, $this->cron_reference );
+            }
+            else {
                 wp_schedule_event( $time, $frequency, $this->cron_reference );
             }
         }
-
         public function unschedule_cron_check() 
         {
-            if ( ! wp_next_scheduled( $this->cron_reference ) ) {
-                wp_unschedule_event (wp_next_scheduled ($this->cron_reference), $this->cron_reference);
+            foreach (get_option('cron') as $cron_timestamp => $cron) {
+                foreach ($cron as $cron_title => $value) {
+                    if (trim($cron_title) == $this->cron_reference) {
+                        wp_unschedule_event ($cron_timestamp, $this->cron_reference);
+                    }
+                }
             }
         }
 
